@@ -2,7 +2,7 @@
 
 BEFORE=$(free -h | grep Mem | awk '{print $2 "\t\t" $3 "\t\t\\e[1;33m" $4 "\t\t\\e[0;37m" $5 "\t\t\\e[1;31m" $6 "\t\t\\e[0;37m" $7}')
 
-su -c "echo 3 >'/proc/sys/vm/drop_caches'"
+su -c "echo 1 >'/proc/sys/vm/drop_caches'"
 
 AFTER=$(free -h | grep Mem | awk '{print $2 "\t\t" $3 "\t\t\\e[1;33m" $4 "\t\t\\e[0;37m" $5 "\t\t\\e[1;31m" $6 "\t\t\\e[0;37m" $7}')
 
