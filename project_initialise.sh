@@ -4,8 +4,6 @@
 # initialisation, README file generation and commit, language-specific file 
 # setup, and .gitignore configuration. 
 
-set -e
-
 # Project Description
 LANGUAGE="${1#*.}"
 TITLE="${1%%.*}"
@@ -27,7 +25,7 @@ touch todo
 echo -e ".gitignore\n\ntodo\n" > .gitignore
 
 # Write & Commit basic readme
-echo "# ${TITLE^}" > README.md
+echo -e "# $TITLE\n\n" > README.md
 git add README.md 
 git commit -m "readme"
 
