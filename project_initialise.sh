@@ -8,6 +8,10 @@
 LANGUAGE="${1#*.}"
 TITLE="${1%%.*}"
 
+# User Info
+GIT_USER="karshPrime"
+
+
 # Get Started -----------------------------------------------------------------
 echo "Initializing Project at $(pwd)/$TITLE"
 
@@ -56,4 +60,14 @@ elif [ "$LANGUAGE" = "rs" ]; then
     git add Cargo.toml src/main.rs 
     git commit -m "project init"
 fi
+
+
+# Push to GitHub -------------------------------------------------------------
+# This step presumes a repo for this project has been already created on
+# github. Else extent this portion to include gh-cli to create a repo from
+# here as well.
+# It is also presumed that the said repo is of the same name as $TITLE
+
+git remote add origin "git@github.com:$GIT_USER/$TITLE.git"
+git push -u origin master
 
