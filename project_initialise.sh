@@ -11,16 +11,20 @@ TITLE="${1%%.*}"
 # User Info
 GIT_USER="karshPrime"
 
+# Directories
+TEMPLATE="$HOME/Projects/SysHacks/Makefiles/"  # default makefile directory
+LICENSE="$HOME/Projects/LICENSE"    # license file; can be upgraded for dynamic 
+                                    # licenses per project
 
 # Get Started -----------------------------------------------------------------
 echo "Initializing Project at $(pwd)/$TITLE"
 
 mkdir "$TITLE"
-cd "$TITLE"
+cd "$TITLE"karshPrime
 
 # Initialize git & Commit license
 git init --quiet
-cp ~/Projects/LICENSE .
+cp $LICENSE .
 git add LICENSE
 git commit -m "Apache 2.0"
 
@@ -47,11 +51,14 @@ if [ "$LANGUAGE" = "go" ]; then
 
 # C/C++
 elif [ "$LANGUAGE" = "c" ] || [ "$LANGUAGE" = "cpp" ]; then
-    mkdir src obj bin
-    touch Makefile "src/main.$LANGUAGE"
-    echo -e "\nbin/\nobj/\n" >> .gitignore
-    git add Makefile src/main.$LANGUAGE
+    mkdir src obj
+    touch "src/main.$LANGUAGE"
+    echo -e "bin\nobj/\n" >> .gitignore
+    git add src/main.$LANGUAGE
     git commit -m "project init"
+    cp $TEMPLATE/$LANGUAGE ./Makefile
+    git add Makefile 
+    git commit -m "Makefile"
 
 # Rust
 elif [ "$LANGUAGE" = "rs" ]; then
@@ -68,6 +75,16 @@ fi
 # here as well.
 # It is also presumed that the said repo is of the same name as $TITLE
 
-git remote add origin "git@github.com:$GIT_USER/$TITLE.git"
-git push -u origin master
+# Check if the -g flag is present
+contains_g_flag() {
+    for arg in "$@"; do
+        [[ "$arg" == "-g" ]] && return 0
+    done
+    return 1
+}
+
+if contains_g_flag "$@"; then
+    git remote add origin "git@github.com:$GIT_USER/$TITLE.git"
+    git push -u origin master
+fi
 
