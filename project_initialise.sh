@@ -20,7 +20,7 @@ LICENSE="$HOME/Projects/LICENSE"    # license file; can be upgraded for dynamic
 echo "Initializing Project at $(pwd)/$TITLE"
 
 mkdir "$TITLE"
-cd "$TITLE"karshPrime
+cd "$TITLE"
 
 # Initialize git & Commit license
 git init --quiet
