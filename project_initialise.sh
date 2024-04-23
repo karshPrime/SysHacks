@@ -28,9 +28,8 @@ cp $LICENSE .
 git add LICENSE
 git commit -m "Apache 2.0"
 
-# Create todo & .gitignore
-touch todo
-echo -e ".gitignore\n\ntodo\n" > .gitignore
+# Create .gitignore
+echo -e ".gitignore\n\n" > .gitignore
 
 # Write & Commit basic readme
 echo -e "# $TITLE\n\n" > README.md
@@ -45,14 +44,14 @@ if [ "$LANGUAGE" = "go" ]; then
     echo -e "go.sum\n\nbin/\n" >> .gitignore
     go mod init "$TITLE"
     mkdir cmd
-    touch main.go
+    echo -e "package main\n\nimport (\n\n)\n\nfunc main() {\n\n}\n" > main.go
     git add main.go go.mod
     git commit -m "project init"
 
 # C/C++
 elif [ "$LANGUAGE" = "c" ] || [ "$LANGUAGE" = "cpp" ]; then
     mkdir src obj
-    touch "src/main.$LANGUAGE"
+    echo -e "\nint main()\n{\n    return 0;\n}\n" > "src/main.$LANGUAGE"
     echo -e "bin\nobj/\n" >> .gitignore
     git add src/main.$LANGUAGE
     git commit -m "project init"
