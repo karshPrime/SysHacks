@@ -6,6 +6,15 @@ enjoyable.
 
 
 <details>
+<summary>battery_cap.sh</summary>
+Limit laptop battery from overcharging. Define maximum charge limit within the 
+script and if the model's supported, the script will enable systemd service to 
+limit charging over your specified limit.
+
+</details>
+
+
+<details>
 <summary>colors.sh</summary>
 Displays all terminal colors along with their escape character codes. Offers a
 visual representation of various color combinations for customisation.
