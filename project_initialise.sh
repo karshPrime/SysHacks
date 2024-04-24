@@ -15,6 +15,8 @@ GIT_USER="karshPrime"
 TEMPLATE="$HOME/Projects/SysHacks/Makefiles/"  # default makefile directory
 LICENSE="$HOME/Projects/LICENSE"    # license file; can be upgraded for dynamic 
                                     # licenses per project
+TMUXIFIER_LAYOUT="$HOME/.config/tmux/tmuxifier/layouts"
+
 
 # Get Started -----------------------------------------------------------------
 echo "Initializing Project at $(pwd)/$TITLE"
@@ -48,6 +50,7 @@ if [ "$LANGUAGE" = "go" ]; then
     git add main.go go.mod
     git commit -m "project init"
 
+
 # C/C++
 elif [ "$LANGUAGE" = "c" ] || [ "$LANGUAGE" = "cpp" ]; then
     mkdir src obj
@@ -59,31 +62,52 @@ elif [ "$LANGUAGE" = "c" ] || [ "$LANGUAGE" = "cpp" ]; then
     git add Makefile 
     git commit -m "Makefile"
 
+
 # Rust
 elif [ "$LANGUAGE" = "rs" ]; then
     cargo init
     echo -e "Cargo.lock\n\ntarget/\n" >> .gitignore
     git add Cargo.toml src/main.rs 
     git commit -m "project init"
+
 fi
 
 
-# Push to GitHub -------------------------------------------------------------
+# FLags Actions ---------------------------------------------------------------
+
+# Check if the -g flag is present
+contains_flag() {
+    local flag="-$1"
+    shift # Remove the first argument which is the flag we are checking for
+    for arg in "$@"; do
+        [[ "$arg" == "$flag" ]] && return 0
+    done
+    return 1
+}
+
+# Push to GitHub
 # This step presumes a repo for this project has been already created on
 # github. Else extent this portion to include gh-cli to create a repo from
 # here as well.
 # It is also presumed that the said repo is of the same name as $TITLE
 
-# Check if the -g flag is present
-contains_g_flag() {
-    for arg in "$@"; do
-        [[ "$arg" == "-g" ]] && return 0
-    done
-    return 1
-}
-
-if contains_g_flag "$@"; then
+if contains_flag "g" "$@"; then
     git remote add origin "git@github.com:$GIT_USER/$TITLE.git"
     git push -u origin master
+fi
+
+
+# Set up Tmuxifier Layout 
+
+if contains_flag "t" "$@"; then
+    # setting up basic template
+    echo -e "session_root \"$(pwd)\"\n" > "$TITLE.session.sh"
+    echo -e "if initialize_session \"$TITLE\"; then\n" >> "$TITLE.session.sh"
+    echo -e "fi\n\nfinalize_and_go_to_session\n" >> "$TITLE.session.sh"
+
+    $EDITOR "$TITLE.session.sh"
+    git add "$TITLE.session.sh"
+    git commit -m "tmuxifier layout"
+    ln -s "$(pwd)/$TITLE.session.sh" $TMUXIFIER_LAYOUT
 fi
 
