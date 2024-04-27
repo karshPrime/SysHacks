@@ -19,8 +19,16 @@ limit charging over your specified limit.
 Displays all terminal colors along with their escape character codes. Offers a
 visual representation of various color combinations for customisation.
 
-
 ![physicalModel](/screenshots/colors.png)
+</details>
+
+
+<details>
+<summary>copy_code.sh</summary>
+Copy all code of a specified type to clipboard. Would be extremely helpful when
+trying to share code where uploading files is not convenient/possible.
+
+![physicalModel](/screenshots/copy_code.png)
 </details>
 
 
