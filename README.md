@@ -85,11 +85,20 @@ applicable, the target file it points to.
 
 
 <details>
+<summary>testing.sh</summary>
+Script to prevent having 100s of testing temporary directories within Project
+or even ~. This script works with ![project_initialise](/project_initialise.sh)
+to create a testX directory within /tmp/ for temporary usecase.
+
+![physicalModel](/screenshots/testing.png)
+</details>
+
+
+<details>
 <summary>todo.sh</summary>
 Maintains an organised library of todo files at a specified location. Opens a
 todo file associated with the current project or directory in the default
 editor.
-
 
 ![physicalModel](/screenshots/todo.png)
 </details>
