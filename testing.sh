@@ -21,7 +21,7 @@ next=$((highest + 1))
 # Trigger project init script 
 $PROJ_INIT "test${next}.$1"
 
-# Restore cd -
+# moving dir to /tmp/
 mv "./test${next}" /tmp/.
 cd "/tmp/test${next}/"
 
