@@ -32,11 +32,17 @@ case "$1" in
             exit 1
         fi
 
+        if [ "$2" == "." ]; then
+            WORKDIR=". -maxdepth 1"
+        else
+            WORKDIR="$PROJECT_NAME"
+        fi
+
         # Shift the parameters to access $3, $4, and so on
         shift
 
         # Build the find command dynamically based on the provided file extensions
-        find_cmd="find $PROJECT_NAME -type f"
+        find_cmd="find $WORKDIR -type f"
         for extension in "$@"; do
             find_cmd+=" -iname '*.$extension' -o"
         done
