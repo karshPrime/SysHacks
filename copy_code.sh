@@ -18,7 +18,7 @@ function process_directory {
                 if [ "${filename##*.}" = "$ext" ]; then
                     # get relative path from base project directory
                     relative_path=${filename#$base_dir/}
-                    echo "### $relative_path ======" >> catbuffer.txt
+                    echo "====== $relative_path ======" >> catbuffer.txt
 
                     cat "$filename" >> catbuffer.txt
                     echo >> catbuffer.txt
