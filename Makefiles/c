@@ -27,9 +27,18 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
+# Debug target
+debug: $(TARGET)
+	gdb $(TARGET) --quiet
+
+# Debug Compilation
+debug_compile:
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -o $(TARGET) $(SRCS) -g
+
 # Clean
 clean:
 	rm -rf $(OBJ_DIR)/* $(TARGET)
 
 # Phony targets
-.PHONY: all clean
+.PHONY: all debug debug_compile clean
