@@ -17,7 +17,7 @@
 # and should work across various desktop environments (DEs) such as GNOME, KDE,
 # XFCE, and LXQt.
 
-TRASH_DIR="$HOME/.local/share/Trash/files/"
+TRASH_DIR="$HOME/.Trash"
 
 # Check if no arguments were given
 if [ $# -eq 0 ]; then
@@ -36,9 +36,9 @@ for item in "$@"; do
         new_name="${current_time}_${base_name}"
 
         mv "$item" "$TRASH_DIR/$new_name"
-        echo -e "\e[31mDeleted \e[0m$item"
+        echo "\033[31mDeleted \033[0m$item"
     else
-        echo -e "\e[31mWarning: \e[33m'$item' \e[0mdoes not exist"
+        echo "\033[31mWarning: \033[33m'$item' \033[0mdoes not exist"
     fi
 done
 
