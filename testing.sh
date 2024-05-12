@@ -19,9 +19,12 @@ fi
 next=$((highest + 1))
 
 # Trigger project init script 
-$PROJ_INIT "test${next}.$1"
+if [ -n "$1" ]; then
+    $PROJ_INIT "test${next}.$1"
+    mv "./test${next}" /tmp/.   # moving dir to /tmp/
+else
+    mkdir "/tmp/test${next}"
+fi
 
-# moving dir to /tmp/
-mv "./test${next}" /tmp/.
 cd "/tmp/test${next}/"
 
