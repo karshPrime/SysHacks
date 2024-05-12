@@ -43,10 +43,10 @@ fi
 process_directory "$(pwd)" "$@"
 
 # Put content of the buffer file to clipboard
-wl-copy < catbuffer.txt
+pbcopy < catbuffer.txt
 
 # Delete the buffer file
 rm catbuffer.txt
 
-echo -e "All \e[33m$@ \e[0mfiles content have been concatenated to clipboard"
+echo -e "All \033[33m$@ \033[0mfiles content have been concatenated to clipboard"
 

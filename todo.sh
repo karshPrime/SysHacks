@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-TODO_PATH="$HOME/Desktop"
+TODO_PATH="$HOME/Documents/todo/"
 
 if git rev-parse --is-inside-work-tree &> /dev/null; then
     TITLE_PATH=$(git rev-parse --show-toplevel)

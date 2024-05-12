@@ -19,6 +19,7 @@ TMUXIFIER_LAYOUT="$HOME/.config/tmux/tmuxifier/layouts"
 
 
 # Get Started -----------------------------------------------------------------
+
 echo "Initializing Project at $(pwd)/$TITLE"
 
 mkdir "$TITLE"
@@ -31,7 +32,7 @@ git add LICENSE
 git commit -m "Apache 2.0"
 
 # Create .gitignore
-echo -e ".gitignore\n\n" > .gitignore
+echo -e ".gitignore\n.DS_Store\n" > .gitignore
 
 # Write & Commit basic readme
 echo -e "# $TITLE\n\n" > README.md
