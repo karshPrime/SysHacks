@@ -63,6 +63,12 @@ elif [ "$LANGUAGE" = "c" ] || [ "$LANGUAGE" = "cpp" ]; then
     git add Makefile 
     git commit -m "Makefile"
 
+# Lua
+elif [ "$LANGUAGE" = "lua" ]; then
+    mkdir -p "lua/$TITLE"
+    touch "lua/$TITLE/init.lua"
+    echo -e "[format]\nindent = 4\nline_width = 100\nquote_style = "Auto"" > stylua.toml
+
 
 # Rust
 elif [ "$LANGUAGE" = "rs" ]; then
