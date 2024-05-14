@@ -2,6 +2,7 @@
 
 if git rev-parse --is-inside-work-tree &> /dev/null; then
     PROJECT_NAME=$(git rev-parse --show-toplevel)
+    TMUX_PANE="code" # rename window to this if within tmux session
 
     case "$1" in
         readme)
@@ -53,6 +54,11 @@ if git rev-parse --is-inside-work-tree &> /dev/null; then
                 find_cmd+=" -iname '*.$extension' -o"
             done
             find_cmd=${find_cmd% -o}  # Remove the trailing '-o'
+
+            # Rename tmux pane to $TMUX_PANE if within tmux session
+            if [[ ! -z "$TMUX" ]]; then
+                tmux renamew "$TMUX_PANE"
+            fi
 
             # Open all files with the specified extensions in the editor
             $EDITOR $(eval $find_cmd)
