@@ -1,18 +1,15 @@
 #!/usr/bin/env bash
 
-SAVE_PATH="$HOME/Documents/todo/"
-
 # Project Description ---------------------------------------------------------
 
+# Centralised todo location
+SAVE_PATH="$HOME/Documents/todo/"
+
 # Project Path
-if git rev-parse --is-inside-work-tree &> /dev/null; then
-    TITLE_PATH=$(git rev-parse --show-toplevel)
-else
-    TITLE_PATH=$(pwd)
-fi
+TITLE_PATH=$(git rev-parse --is-inside-work-tree &> /dev/null && git rev-parse --show-toplevel || pwd)
 
 # Project Name
-PROJECT_NAME=$(basename $TITLE_PATH)
+PROJECT_NAME=$(basename "$TITLE_PATH")
 
 
 # User Commands ---------------------------------------------------------------
@@ -27,14 +24,32 @@ contains_flag() {
     return 1
 }
 
-# Create new file if one doesn't already exists
+# Create new file if one doesn't already exist
 # default + support for -l
-if [ -n $(find $SAVE_PATH -type f -name "$PROJECT_NAME.todo") ] ||
-    [ -n $(find $TITLE_PATH -type f -name "$PROJECT_NAME.todo") ]; then
-    
-    if contains_flag "l" "$@"; then
-        touch "$TITLE_PATH/$PROJECT_NAME.todo"
-    else
-        touch "$SAVE_PATH/$PROJECT_NAME.todo"
-    fi
+if contains_flag "l" "$@"; then
+    TODO_FILE="$TITLE_PATH/$PROJECT_NAME.todo"
+    touch "$TODO_FILE"
 fi
+
+# Check if TODO exists
+# -e
+if contains_flag "e" "$@"; then
+    if [ -f "$SAVE_PATH/$PROJECT_NAME.todo" ]; then
+        echo -e "\033[31mCentralised :\033[0m Present"
+    else
+        echo -e "\033[31mCentralised :\033[0m Not Present"
+    fi
+
+    if [ -f "$TITLE_PATH/$PROJECT_NAME.todo" ]; then
+        echo -e "\033[31mIn Project  :\033[0m Present"
+    else
+        echo -e "\033[31mIn Project  :\033[0m Not Present"
+    fi
+    exit 0
+fi
+
+
+# Edit the TODO file ----------------------------------------------------------
+
+TODO_FILE="$SAVE_PATH/$PROJECT_NAME.todo"
+$EDITOR "$TODO_FILE"
