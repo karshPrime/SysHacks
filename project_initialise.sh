@@ -69,6 +69,12 @@ elif [ "$LANGUAGE" = "lua" ]; then
     touch "lua/$TITLE/init.lua"
     echo -e "[format]\nindent = 4\nline_width = 100\nquote_style = "Auto"" > stylua.toml
 
+# Python
+elif [ "$LANGUAGE" = "py" ]; then
+    python3 -m venv ./.venv
+    echo -e "\n.venv/" >> .gitignore
+    echo -e "\n# $TITLE\n\ndef main():\n\tpass\n\nif __name__ == \"__main__\":
+    main()\n" > main.py
 
 # Rust
 elif [ "$LANGUAGE" = "rs" ]; then
