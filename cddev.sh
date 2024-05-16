@@ -22,8 +22,8 @@ if git rev-parse --is-inside-work-tree &> /dev/null; then
             ;;
 
         main)
-            $EDITOR $(find $PROJECT_NAME -type d -name ".git" -prune -o -type f\
-                -iname "main*" ! -iname "main.o" -print)
+            $EDITOR $(find . \( -path "./.*" -prune \) -o \( -type f -iname "main*"\
+                ! -iname "main.o" \) -print)
             ;;
 
         parent)
