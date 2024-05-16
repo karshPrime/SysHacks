@@ -36,9 +36,14 @@ debug_compile:
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -o $(TARGET) $(SRCS) -g
 
+# Run the program (compile if necessary)
+run: all
+	@echo "Running the program..."
+	@./bin
+
 # Clean
 clean:
 	rm -rf $(OBJ_DIR)/* $(TARGET)
 
 # Phony targets
-.PHONY: all debug debug_compile clean
+.PHONY: all clean debug debug_compile run
