@@ -6,7 +6,7 @@
 
 # Project Description
 LANGUAGE="${1#*.}"
-TITLE="${1%%.*}"
+TITLE="${1%.*}"
 
 # User Info
 GIT_USER="karshPrime"
