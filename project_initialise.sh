@@ -5,8 +5,10 @@
 # setup, and .gitignore configuration. 
 
 # Project Description
-LANGUAGE="${1#*.}"
+LANGUAGE="${1##*.}"
 TITLE="${1%.*}"
+
+echo "language = $LANGUAGE"
 
 # User Info
 GIT_USER="karshPrime"
@@ -68,6 +70,7 @@ elif [ "$LANGUAGE" = "lua" ]; then
     mkdir -p "lua/$TITLE"
     touch "lua/$TITLE/init.lua"
     echo -e "[format]\nindent = 4\nline_width = 100\nquote_style = "Auto"" > stylua.toml
+    git add -A && git commit -m "project init"
 
 # Python
 elif [ "$LANGUAGE" = "py" ]; then
@@ -106,7 +109,7 @@ contains_flag() {
 
 if contains_flag "g" "$@"; then
     git remote add origin "git@github.com:$GIT_USER/$TITLE.git"
-    git push -u origin master
+    git push -u origin main
 fi
 
 
