@@ -6,7 +6,7 @@ if git rev-parse --is-inside-work-tree &> /dev/null; then
 
     case "$1" in
         readme)
-            $EDITOR "$PROJECT_NAME/README*"
+            $EDITOR "$PROJECT_NAME/README"*
             ;;
 
         gitignore)
