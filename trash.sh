@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 # This script enhances file deletion safety by mimicking the behavior of the
 # graphical environment's trash system directly from the terminal. Instead of
@@ -36,9 +36,9 @@ for item in "$@"; do
         new_name="${current_time}_${base_name}"
 
         mv "$item" "$TRASH_DIR/$new_name"
-        echo "\033[31mDeleted \033[0m$item"
+        echo -e "\033[31mDeleted \033[0m$item"
     else
-        echo "\033[31mWarning: \033[33m'$item' \033[0mdoes not exist"
+        echo -e "\033[31mWarning: \033[33m'$item' \033[0mdoes not exist"
     fi
 done
 
