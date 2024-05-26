@@ -8,8 +8,6 @@
 LANGUAGE="${1##*.}"
 TITLE="${1%.*}"
 
-echo "language = $LANGUAGE"
-
 # User Info
 GIT_USER="karshPrime"
 
