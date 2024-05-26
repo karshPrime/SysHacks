@@ -21,7 +21,7 @@ TRASH_DIR="$HOME/.Trash"
 
 # Check if no arguments were given
 if [ $# -eq 0 ]; then
-    echo "Usage: $0 file_or_directory [file_or_directory ...]"
+    echo -e "\033[33mUsage: \033[31mtrash.sh \033[0m[file_or_directory ...]"
     exit 1
 fi
 
