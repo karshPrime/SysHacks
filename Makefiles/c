@@ -1,5 +1,5 @@
 # Compiler and flags
-CC = gcc
+CC = llvm-gcc
 CFLAGS = -Wall -O2
 
 # Directories
