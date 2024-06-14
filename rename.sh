@@ -6,7 +6,9 @@ if [ $# -eq 0 ]; then
 fi
 
 echo "DONT DELETE ANY FILES IN HERE" > \~RENAME_BUFFER
-echo "$@" | sed 's/ .\//\n.\//g' >> \~RENAME_BUFFER
+for arg in "$@"; do
+    echo "$arg" >> \~RENAME_BUFFER
+done
 
 LINES_BEFORE=$(wc -l < \~RENAME_BUFFER | tr -d ' ')
 
@@ -26,8 +28,8 @@ for i in $(seq 2 $LINES_BEFORE); do
     original_name=${original_names[$((i-2))]}
     new_name=$(awk "NR==$i" \~RENAME_BUFFER)
 
-    if [[ $original_name = $new_name ]]; then
-        continue;
+    if [[ "$original_name" == "$new_name" ]]; then
+        continue
     fi
 
     echo -e "\033[33mrenaming \033[36m$original_name \033[33mto \033[0m$new_name"
