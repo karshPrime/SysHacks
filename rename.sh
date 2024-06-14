@@ -6,7 +6,7 @@ if [ $# -eq 0 ]; then
 fi
 
 echo "DONT DELETE ANY FILES IN HERE" > \~RENAME_BUFFER
-echo "$@" | tr ' ' '\n' >> \~RENAME_BUFFER
+echo "$@" | sed 's/ .\//\n.\//g' >> \~RENAME_BUFFER
 
 LINES_BEFORE=$(wc -l < \~RENAME_BUFFER | tr -d ' ')
 
@@ -31,7 +31,7 @@ for i in $(seq 2 $LINES_BEFORE); do
     fi
 
     echo -e "\033[33mrenaming \033[36m$original_name \033[33mto \033[0m$new_name"
-    mv $original_name $new_name
+    mv "$original_name" "$new_name"
 done
 
 rm \~RENAME_BUFFER
