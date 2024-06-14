@@ -81,6 +81,15 @@ and buffer/cache memory.
 
 
 <details>
+<summary>rename.sh</summary>
+Mass rename files using a text editor. Super handy with vim motions and macros.
+
+
+![physicalModel](/screenshots/rename.png)
+</details>
+
+
+<details>
 <summary>resistor.c</summary>
 Gives resistance values for band colors. If provided with specific bands (e.g.,
 blue red green gold), it will output the corresponding resistance value. With no
