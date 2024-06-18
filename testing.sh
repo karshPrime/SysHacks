@@ -8,13 +8,6 @@
 # directory within tmp
 PROJ_INIT="$HOME/Projects/SysHacks/project_initialise.sh"
 
-# Delete all test dirs when script called with "clear"
-if [ "$1" = "clear" ]; then
-    echo "Clearing test directories..."
-    bash "$HOME/Projects/SysHacks/trash.sh" $(find /tmp/ -maxdepth 1 -type d -name 'test*')
-    return 0
-fi
-
 # Find the last test directory
 highest=$(find /tmp/ -maxdepth 1 -type d -name "test*" | grep -o '[0-9]*$' | sort -n | tail -1)
 
