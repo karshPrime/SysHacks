@@ -54,7 +54,7 @@ if [ "$LANGUAGE" = "go" ]; then
 
 # C/C++
 elif [ "$LANGUAGE" = "c" ] || [ "$LANGUAGE" = "cpp" ]; then
-    mkdir src obj
+    mkdir src obj lib
     echo -e "\nint main()\n{\n    return 0;\n}\n" > "src/main.$LANGUAGE"
     echo -e "bin\nobj/\n" >> .gitignore
     git add src/main.$LANGUAGE
