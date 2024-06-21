@@ -83,7 +83,8 @@ and buffer/cache memory.
 <details>
 <summary>rename.sh</summary>
 Mass rename files using a text editor. Super handy with vim motions and macros.
-
+Also supports file conversion via `ffmpeg`. Rename a file with new extension,
+and the script will convert it as well.
 
 ![physicalModel](/screenshots/rename.png)
 </details>
