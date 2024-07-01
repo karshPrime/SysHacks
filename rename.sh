@@ -41,13 +41,18 @@ for (( i=2; i<=$LINES_BEFORE; i++ )); do
     elif ! command -v ffmpeg &> /dev/null; then
         echo -e "\033[31mError: \033[0mInstall ffmpeg to perform filetype conversions."
         mv "$original_name" "$new_name"
-        continue
 
     # convert file
     else
         echo -e "\033[33mconverting \033[36m$original_name \033[33mto \033[0m$new_name"
         ffmpeg -i "$original_name" "$new_name"
-        rm "$original_name"
+
+        # Check if ffmpeg was successful
+        if [ $? -eq 0 ]; then
+            rm "$original_name"
+        else
+            echo -e "\033[31mError: \033[0mConversion failed for $original_name"
+        fi
     fi
 done
 
