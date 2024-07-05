@@ -31,38 +31,45 @@ if git rev-parse --is-inside-work-tree &> /dev/null; then
             ;;
 
         alltype) 
-            # open all project codefile in buffer. comes handy with telescope buffer when
-            # new files are not git commited, or when git commits also consists of a lot
-            # of binaries and non-code files
-            if [ -z "$2" ]; then
-                echo -e "Usage: \e[33mcode \e[34m<file_extensions>"
-                exit 1
-            fi
+            # open all project codefile in buffer. comes handy with telescope
+            # buffer when new files are not git commited, or when git commits
+            # also consists of a lot of binaries and non-code files
+            WORKDIR="$PROJECT_NAME"
+            CONDITIONS=()
 
-            if [ "$2" == "." ]; then
-                WORKDIR=". -maxdepth 1"
-            else
-                WORKDIR="$PROJECT_NAME"
-            fi
-
-            # Shift the parameters to access $3, $4, and so on
-            shift
-
-            # Build the find command dynamically based on the provided file extensions
-            find_cmd="find $WORKDIR -type f"
-            for extension in "$@"; do
-                find_cmd+=" -iname '*.$extension' -o"
+            # construct the find conditions based on arguments
+            for ARG in "$@"; do
+                if [ "$ARG" == "." ]; then
+                    WORKDIR=$(pwd)
+                else
+                    CONDITIONS+=("-iname" "*.$ARG" "-o")
+                fi
             done
-            find_cmd=${find_cmd% -o}  # Remove the trailing '-o'
-
-            # Rename tmux pane to $TMUX_PANE if within tmux session
-            if [[ ! -z "$TMUX" ]]; then
-                tmux renamew "$TMUX_PANE"
+ 
+            # remove the trailing -o if present
+            if [ ${#CONDITIONS[@]} -gt 0 ]; then
+                unset 'CONDITIONS[-1]'
             fi
+ 
+            # find files based on constructed conditions, excluding .git directory
+            FILES=$(find "$WORKDIR" -type f \( "${CONDITIONS[@]}" \) -not -path '*/.git/*')
 
-            # Open all files with the specified extensions in the editor
-            $EDITOR $(eval $find_cmd)
-            ;;
+            # trim the project path from the results
+            trimmed_paths=()
+            while IFS= read -r path; do
+                trimmed_path="${path#$WORKDIR/}"
+                trimmed_paths+=("$trimmed_path")
+            done <<< "$FILES"
+ 
+            # use fzf to select files, displaying with bat
+            pushd "$WORKDIR" > /dev/null
+            FILES_CMD=$(printf "%s\n" "${trimmed_paths[@]}" | fzf --layout=reverse --cycle -i -m --preview="bat --color=always --number {}")
+            popd > /dev/null
+
+            # open the selected files in the editor
+            if [ -n "$FILES_CMD" ]; then
+                "$EDITOR" $(echo "$FILES_CMD" | sed "s|^|$WORKDIR/|")
+            fi
     esac
 
 else
