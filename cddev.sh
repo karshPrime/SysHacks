@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# ensure the script is being run inside a git repository
 if ! git rev-parse --is-inside-work-tree &> /dev/null; then
     echo -e "\e[31mError: \e[0mThis action requires the project to be within a git repo."
     exit 1
@@ -47,12 +48,14 @@ case "$1" in
         done
 
         # remove trailing '-o' if present
-        if [ ${#CONDITIONS[@]} -gt 0 ]; then
-            unset 'CONDITIONS[-1]'
-        fi
+        [ ${#CONDITIONS[@]} -gt 0 ] && unset 'CONDITIONS[-1]'
 
         # find files based on constructed conditions, excluding .git directory
-        FILES=$(find "$WORKDIR" -type f \( "${CONDITIONS[@]}" \) -not -path '*/.git/*')
+        if [ ${#CONDITIONS[@]} -gt 2 ]; then
+            FILES=$(find "$WORKDIR" -type f \( "${CONDITIONS[@]}" \) -not -path '*/.git/*')
+        else
+            FILES=$(find "$WORKDIR" -type f -not -path '*/.git/*')
+        fi
 
         # trim the project path from the results
         trimmed_paths=()
@@ -63,7 +66,8 @@ case "$1" in
 
         # use fzf to select files, displaying with bat
         pushd "$WORKDIR" > /dev/null || exit
-        FILES_CMD=$(printf "%s\n" "${trimmed_paths[@]}" | fzf --layout=reverse --cycle -i -m --preview="bat --color=always --number {}")
+        FILES_CMD=$(printf "%s\n" "${trimmed_paths[@]}" |
+            fzf --layout=reverse --cycle -i -m --preview="bat --color=always --number {}")
         popd > /dev/null || exit
 
         # open the selected files in the editor
