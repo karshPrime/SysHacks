@@ -32,7 +32,7 @@ git add LICENSE
 git commit -m "Apache 2.0"
 
 # Create .gitignore
-echo -e ".gitignore\n.DS_Store\n" > .gitignore
+echo -e "\n# .gitignore\n\n**/.DS_Store\n" > .gitignore
 
 # Write & Commit basic readme
 echo -e "# $TITLE\n\n" > README.md
@@ -44,48 +44,44 @@ git commit -m "readme"
 
 # Go
 if [ "$LANGUAGE" = "go" ]; then
-    echo -e "go.sum\n\nbin/\n" >> .gitignore
+    echo -e "go.sum\nbin/\n" >> .gitignore
     go mod init "$TITLE"
     mkdir cmd
     echo -e "package main\n\nimport (\n\n)\n\nfunc main() {\n\n}\n" > main.go
-    git add main.go go.mod
-    git commit -m "project init"
 
 
 # C/C++
 elif [ "$LANGUAGE" = "c" ] || [ "$LANGUAGE" = "cpp" ]; then
-    mkdir src obj lib
-    echo -e "\nint main()\n{\n    return 0;\n}\n" > "src/main.$LANGUAGE"
-    echo -e "bin\nobj/\n" >> .gitignore
-    git add src/main.$LANGUAGE
-    git commit -m "project init"
     cp $TEMPLATE/$LANGUAGE ./Makefile
     git add Makefile 
     git commit -m "Makefile"
+    mkdir src obj lib
+    echo -e "\nint main()\n{\n    return 0;\n}\n" > "src/main.$LANGUAGE"
+    echo -e "bin\nobj/\n" >> .gitignore
 
 # Lua
 elif [ "$LANGUAGE" = "lua" ]; then
     mkdir -p "lua/$TITLE"
     touch "lua/$TITLE/init.lua"
     echo -e "[format]\nindent = 4\nline_width = 100\nquote_style = "Auto"" > stylua.toml
-    git add -A && git commit -m "project init"
 
 # Python
 elif [ "$LANGUAGE" = "py" ]; then
     python3 -m venv ./.venv
-    echo -e "\n.venv/" >> .gitignore
+    echo -e ".venv/\n__pycache__/\n" >> .gitignore
     echo -e "\n# $TITLE\n\ndef main():\n\tpass\n\nif __name__ == \"__main__\":
     main()\n" > main.py
 
 # Rust
 elif [ "$LANGUAGE" = "rs" ]; then
-    cargo init
-    echo -e "Cargo.lock\n\ntarget/\n" >> .gitignore
-    git add Cargo.toml src/main.rs 
-    git commit -m "project init"
+    cargo init --vcs none
+    echo -e "Cargo.lock\ntarget/\n" >> .gitignore
 
 fi
 
+# Commit Template
+git add -A
+git commit -m "project init"
 
 # FLags Actions ---------------------------------------------------------------
 
