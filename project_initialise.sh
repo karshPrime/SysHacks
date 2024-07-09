@@ -44,10 +44,11 @@ git commit -m "readme"
 
 # Go
 if [ "$LANGUAGE" = "go" ]; then
-    echo -e "go.sum\nbin/\n" >> .gitignore
+    echo -e "go.sum\n$TITLE\nbin/\n" >> .gitignore
     go mod init "$TITLE"
     mkdir cmd
-    echo -e "package main\n\nimport (\n\n)\n\nfunc main() {\n\n}\n" > main.go
+    echo -e "\npackage main\n\nimport (\n\
+    //\"$TITLE/cmd\"\n)\n\nfunc main() {\n\n}\n" > main.go
 
 
 # C/C++
@@ -63,13 +64,13 @@ elif [ "$LANGUAGE" = "c" ] || [ "$LANGUAGE" = "cpp" ]; then
 elif [ "$LANGUAGE" = "lua" ]; then
     mkdir -p "lua/$TITLE"
     touch "lua/$TITLE/init.lua"
-    echo -e "[format]\nindent = 4\nline_width = 100\nquote_style = "Auto"" > stylua.toml
+    echo -e "[format]\nindent=4\nline_width=80\nquote_style="Auto"">stylua.toml
 
 # Python
 elif [ "$LANGUAGE" = "py" ]; then
     python3 -m venv ./.venv
     echo -e ".venv/\n__pycache__/\n" >> .gitignore
-    echo -e "\n# $TITLE\n\ndef main():\n\tpass\n\nif __name__ == \"__main__\":
+    echo -e "\n# $TITLE\n\ndef main():\n    pass\n\nif __name__ == \"__main__\":
     main()\n" > main.py
 
 # Rust

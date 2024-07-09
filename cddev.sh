@@ -27,7 +27,7 @@ case "$1" in
         ;;
 
     main)
-        "$EDITOR" $(find "$PROJECT_NAME" -type f -iname "main*" -not -path '*/.git/*' ! -iname "main.o")
+        "$EDITOR" $(find "$PROJECT_NAME" -type f -iname "main*" -not -path '*/.*/*' ! -iname "main.o")
         ;;
 
     parent)
