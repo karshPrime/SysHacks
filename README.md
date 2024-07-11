@@ -141,3 +141,11 @@ delete files later.
 ![physicalModel](/screenshots/trash.png)
 </details>
 
+
+<details>
+<summary>vimacro.sh</summary>
+Bring the magic of vim macros to shell.
+
+![physicalModel](/screenshots/vimacro.png)
+</details>
+
