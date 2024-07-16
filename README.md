@@ -38,6 +38,16 @@ More convenient way to edit common dev files from within any subdirectory
 within the project. For example edit main file from anywhere within the project
 filestructure.
 
+![physicalModel](/screenshots/cddev.png)
+</details>
+
+
+<details>
+<summary>gomake.sh</summary>
+More robust go build command, to compile program for multiple architectures in
+./bin rather than in root project dir.
+
+![physicalModel](/screenshots/gomake.png)
 </details>
 
 
