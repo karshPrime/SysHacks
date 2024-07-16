@@ -20,7 +20,7 @@ else
 fi
 
 output=$(echo "$input" |
-    vi -E -s -u NONE -c "%norm $vi_commands" -c "wq! /dev/stdout" /dev/stdin
+    vi -E -s -u NONE -c "%norm "$vi_commands"" -c "wq! /dev/stdout" /dev/stdin
 )
 
 # print result
