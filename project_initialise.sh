@@ -78,6 +78,17 @@ elif [ "$LANGUAGE" = "rs" ]; then
     cargo init --vcs none
     echo -e "Cargo.lock\ntarget/\n" >> .gitignore
 
+# Java
+elif [ "$LANGUAGE" = "java" ]; then
+	yes no | gradle init \
+		--type java-application \
+		--dsl kotlin \
+		--test-framework junit-jupiter \
+		--package "$TITLE" \
+		--project-name my-project \
+		--no-split-project \
+		--java-version 21 \
+		--overwrite
 fi
 
 # Commit Template
