@@ -26,10 +26,6 @@ case "$1" in
         "$EDITOR" "$PROJECT_NAME/Makefile"
         ;;
 
-    main)
-        "$EDITOR" $(find "$PROJECT_NAME" -type f -iname "main*" -not -path '*/.*/*' ! -iname "main.o")
-        ;;
-
     parent)
         cd "$PROJECT_NAME" || exit
         ;;
@@ -50,9 +46,9 @@ case "$1" in
         # remove trailing '-o' if present
         [ ${#CONDITIONS[@]} -gt 0 ] && unset 'CONDITIONS[-1]'
 
-        # find files based on constructed conditions, excluding .git directory
+        # find files based on constructed conditions, excluding .hidden directory
         if [ ${#CONDITIONS[@]} -gt 2 ]; then
-            FILES=$(find "$WORKDIR" -type f \( "${CONDITIONS[@]}" \) -not -path '*/.git/*')
+            FILES=$(find "$WORKDIR" -type f \( "${CONDITIONS[@]}" \) -not -path '*/.**/*')
         else
             FILES=$(find "$WORKDIR" -type f -not -path '*/.git/*')
         fi
