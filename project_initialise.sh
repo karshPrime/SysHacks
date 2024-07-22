@@ -45,8 +45,8 @@ git commit -m "readme"
 # Go
 if [ "$LANGUAGE" = "go" ]; then
     echo -e "go.sum\n$TITLE\nbin/\n" >> .gitignore
-    go mod init "$TITLE"
-    mkdir cmd
+    go mod init "github.com/$GIT_USER/$TITLE"
+    mkdir cmd bin
     echo -e "\npackage main\n\nimport (\n\
     //\"$TITLE/cmd\"\n)\n\nfunc main() {\n\n}\n" > main.go
 
