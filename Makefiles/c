@@ -32,7 +32,7 @@ $(OBJ_DIR):
 
 # Debug target
 debug: $(TARGET)
-	gdb $(TARGET) --quiet
+	lldb $(TARGET)
 
 # Debug Compilation
 debug_compile:
