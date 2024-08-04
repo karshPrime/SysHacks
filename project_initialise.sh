@@ -44,11 +44,11 @@ git commit -m "readme"
 
 # Go
 if [ "$LANGUAGE" = "go" ]; then
-    echo -e "go.sum\n$TITLE\nbin/\n" >> .gitignore
+    echo -e "go.sum\ngo.mod\n\$TITLE\nbin/\n" >> .gitignore
     go mod init "github.com/$GIT_USER/$TITLE"
     mkdir cmd bin
     echo -e "\npackage main\n\nimport (\n\
-    //\"$TITLE/cmd\"\n)\n\nfunc main() {\n\n}\n" > main.go
+    //\"github.com/$GIT_USER/$TITLE/cmd\"\n)\n\nfunc main() {\n\n}\n" > main.go
 
 
 # C/C++
@@ -57,7 +57,7 @@ elif [ "$LANGUAGE" = "c" ] || [ "$LANGUAGE" = "cpp" ]; then
     git add Makefile 
     git commit -m "Makefile"
     mkdir src obj lib
-    echo -e "\nint main()\n{\n    return 0;\n}\n" > "src/main.$LANGUAGE"
+    echo -e "\nint main() {\n    return 0;\n}\n" > "src/main.$LANGUAGE"
     echo -e "bin\nobj/\n" >> .gitignore
 
 # Lua
