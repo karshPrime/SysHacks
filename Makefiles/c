@@ -1,5 +1,5 @@
 # Compiler and flags
-CC = clang
+CC := gcc
 CFLAGS = -Wall -O2 -I$(LIB_DIR)
 
 # Directories
@@ -21,10 +21,12 @@ all: $(TARGET)
 
 # Linking
 $(TARGET): $(OBJS)
+	@echo "Linking..."
 	$(CC) $(CFLAGS) -o $@ $^ -L$(LIB_DIR) -lm
 
 # Compilation
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	@echo "Compiling..."
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(OBJ_DIR):
@@ -36,6 +38,7 @@ debug: $(TARGET)
 
 # Debug Compilation
 debug_compile:
+	@echo "Compiling for Debug..."
 	mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -o $(TARGET) $(SRCS) -g -L$(LIB_DIR) -lm
 

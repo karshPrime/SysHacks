@@ -7,23 +7,26 @@ if ! git rev-parse --is-inside-work-tree &> /dev/null; then
 fi
 
 PROJECT_NAME=$(git rev-parse --show-toplevel)
-TMUX_PANE="code" # rename window to this if within tmux session
 
 case "$1" in
     readme)
-        "$EDITOR" "$PROJECT_NAME/README"*
+        echo "$PROJECT_NAME/README"*
         ;;
 
     gitignore)
-        "$EDITOR" "$PROJECT_NAME/.gitignore"
+        echo "$PROJECT_NAME/.gitignore"
         ;;
 
     gitconfig)
-        "$EDITOR" "$PROJECT_NAME/.git/config"
+        echo "$PROJECT_NAME/.git/config"
         ;;
 
+	main)
+		git ls-files "$PROJECT_NAME" | grep -i 'main'
+		;;
+
     makefile)
-        "$EDITOR" "$PROJECT_NAME/Makefile"
+        echo "$PROJECT_NAME/Makefile"
         ;;
 
     parent)
