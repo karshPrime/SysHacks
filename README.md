@@ -33,16 +33,6 @@ trying to share code where uploading files is not convenient/possible.
 
 
 <details>
-<summary>cddev.sh</summary>
-More convenient way to edit common dev files from within any subdirectory 
-within the project. For example edit main file from anywhere within the project
-filestructure.
-
-![physicalModel](/screenshots/cddev.png)
-</details>
-
-
-<details>
 <summary>gomake.sh</summary>
 More robust go build command, to compile program for multiple architectures in
 ./bin rather than in root project dir.
@@ -118,16 +108,6 @@ clean deletion process, first deleting the symbolic link itself and then, if
 applicable, the target file it points to. 
 
 ![physicalModel](/screenshots/rmsymlink.png)
-</details>
-
-
-<details>
-<summary>testing.sh</summary>
-Script to prevent having 100s of testing temporary directories within Project
-or even ~. This script works with project_initialise to create a testX dir
-within /tmp/ for temporary usecase.
-
-![physicalModel](/screenshots/testing.png)
 </details>
 
 
