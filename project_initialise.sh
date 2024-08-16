@@ -39,7 +39,6 @@ echo -e "# $TITLE\n\n" > README.md
 git add README.md 
 git commit -m "readme"
 
-
 # Language specific actions ---------------------------------------------------
 
 # Go
@@ -80,6 +79,9 @@ elif [ "$LANGUAGE" = "rs" ]; then
 
 # Java
 elif [ "$LANGUAGE" = "java" ]; then
+	# update title to be Title
+	TITLE=$(echo $TITLE | perl -pe 's/\b(\w)/\U$1/g')
+
 	yes no | gradle init \
 		--type java-application \
 		--dsl kotlin \
@@ -89,6 +91,22 @@ elif [ "$LANGUAGE" = "java" ]; then
 		--no-split-project \
 		--java-version 21 \
 		--overwrite
+
+
+	# use $TITLE as main class instead of App.Java
+
+	cd "./app/src/main/java/$TITLE"
+	sed "s/App/$TITLE/g" "App.java" > "$TITLE.java"
+	rm App.java
+	cd -
+
+	cd "./app/src/test/java/$TITLE"
+	sed "s/App/$TITLE/g" "AppTest.java" > ""$TITLE"Test.java"
+	rm AppTest.java
+	cd -
+
+	sed "s/$TITLE.App/$TITLE.$TITLE/g" ./app/build.gradle.kts > ./build.gradle.kts.tmp
+	mv ./build.gradle.kts.tmp ./app/build.gradle.kts
 fi
 
 # Commit Template
