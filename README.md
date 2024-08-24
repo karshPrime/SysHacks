@@ -91,6 +91,16 @@ and the script will convert it as well.
 
 
 <details>
+<summary>replace.sh</summary>
+Short script to update current file with sed after confirming the changes.
+Prevents from accidently corrupting the file with regex flaw, or unintended
+change.
+
+![physicalModel](/screenshots/replace.png)
+</details>
+
+
+<details>
 <summary>resistor.c</summary>
 Gives resistance values for band colors. If provided with specific bands (e.g.,
 blue red green gold), it will output the corresponding resistance value. With no
