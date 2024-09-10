@@ -15,6 +15,10 @@ charging at the specified threshold.
 Print every terminal colour alongside its escape sequence. Useful as a visual
 reference when customising prompts, themes, or status lines.
 
+### `periodic.sh`
+Render the periodic table directly in the terminal, with colour coding for groups and
+properties of each element.
+
 ### `resistor.c`
 Decode resistor colour bands. Pass band colours (e.g. `blue red green gold`) to
 get the resistance value, or run with no arguments for a reference table.
