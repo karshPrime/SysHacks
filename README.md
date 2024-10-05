@@ -19,6 +19,10 @@ reference when customising prompts, themes, or status lines.
 Render the periodic table directly in the terminal, with colour coding for groups and
 properties of each element.
 
+### `refresh.sh`
+Drop system caches and report memory usage before and after — total, used,
+free, shared, and buffer/cache.
+
 ### `resistor.c`
 Decode resistor colour bands. Pass band colours (e.g. `blue red green gold`) to
 get the resistance value, or run with no arguments for a reference table.
