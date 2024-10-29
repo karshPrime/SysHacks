@@ -77,11 +77,28 @@ elif [ "$LANGUAGE" = "rs" ]; then
     cargo init --vcs none
     echo -e "Cargo.lock\ntarget/\n" >> .gitignore
 
+# Zig
+elif [ "$LANGUAGE" = "zig" ]; then
+    zig init
+
+    # Remove Comments
+    sed "/\/\/.*/d" ./build.zig > ./build.zig.tmp
+    mv ./build.zig.tmp ./build.zig
+    sed "/\/\/.*/d" ./build.zig.zon > ./build.zig.zon.tmp
+    mv ./build.zig.zon.tmp ./build.zig.zon
+
+    # Cleaner Template code
+    cd ./src/; rm ./main.zig ./root.zig
+    echo -e '\n// Main.zig\n\nconst std = @import("std");\n' > ./main.zig
+    echo -e 'pub fn main() !void {\n}\n\ntest "basic" {\n}\n' >> ./main.zig
+    echo -e '\nconst std = @import("std");\nconst testing = std.testing;\n' > \
+        ./root.zig
+
+    cd ..
+    echo -e ".zig-cache/\n\nzig-out/\nbin\n\n" >> .gitignore
+
 # Java
 elif [ "$LANGUAGE" = "java" ]; then
-	# update title to be Title
-	TITLE=$(echo $TITLE | perl -pe 's/\b(\w)/\U$1/g')
-
 	yes no | gradle init \
 		--type java-application \
 		--dsl kotlin \
@@ -105,8 +122,13 @@ elif [ "$LANGUAGE" = "java" ]; then
 	rm AppTest.java
 	cd -
 
-	sed "s/$TITLE.App/$TITLE.$TITLE/g" ./app/build.gradle.kts > ./build.gradle.kts.tmp
+	sed "s/$TITLE.App/$TITLE.$TITLE/g" ./app/build.gradle.kts > \
+        ./build.gradle.kts.tmp
 	mv ./build.gradle.kts.tmp ./app/build.gradle.kts
+
+	# update .gitignore
+	echo -e "\n**/gradlew*\n**/*gradle*\n**/.settings\n\n**/*.class
+\n*/app/.classpath\n*/app/.project\n*/.project\n" >> .gitignore
 fi
 
 # Commit Template
