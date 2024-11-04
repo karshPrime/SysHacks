@@ -1,9 +1,12 @@
+#!/bin/bash
 
-#!/usr/bin/env bash
-
-RENAME_BUFFER="/tmp/RENAME_BUFFER"
-echo "DONT DELETE ANY FILES IN HERE" > "$RENAME_BUFFER" || {
-    echo "Failed to create $RENAME_BUFFER";
+RENAME_BUFFER="/tmp/RENAME_BUFFER.toml"
+echo "# Mass Rename Tool
+# - Dont add new lines or delete existing ones
+# - Rename with "DELETE" to delete the said files (macro @x)
+# - Dont shuffle file order
+"> "$RENAME_BUFFER" || {
+    echo -e "Failed to create $RENAME_BUFFER";
     exit 1;
 }
 
@@ -12,14 +15,14 @@ ORIGINAL_NAMES=()
 if [ $# -eq 0 ]; then
     IFS=$'\n'
     for arg in $(ls); do
-        echo "$arg" >> "$RENAME_BUFFER"
+        echo -e "$arg" >> "$RENAME_BUFFER"
         ORIGINAL_NAMES+=("$arg")
     done
     unset IFS
 else
     for arg in "$@"; do
         clean_arg="${arg#./}"
-        echo "$clean_arg" >> "$RENAME_BUFFER"
+        echo -e "$clean_arg" >> "$RENAME_BUFFER"
         ORIGINAL_NAMES+=("$clean_arg")
     done
 fi
@@ -36,32 +39,37 @@ if [ "$LINES_BEFORE" != "$LINES_AFTER" ]; then
     exit 1
 fi
 
-for (( i=2; i<=$LINES_BEFORE; i++ )); do
-    original_name="${ORIGINAL_NAMES[$i-2]}"
+for (( i=6; i<=$LINES_BEFORE; i++ )); do
+    original_name="${ORIGINAL_NAMES[$i-6]}"
     new_name=$(awk "NR==$i" "$RENAME_BUFFER")
 
     # do nothing if filename isn't changed
     if [[ "$original_name" == "$new_name" ]]; then
         continue
 
+    # delete file if new name is just DELETE
+    elif [ "$new_name" = "DELETE" ]; then
+        echo -e "\033[31mDeleting \033[36m$original_name"
+        rm -rf "./$original_name"
+
     # if the file extensions are the same
-elif [[ "${original_name##*.}" == "${new_name##*.}" ||
-    "$new_name" == "${new_name%.*}" ||
-    "$original_name" == "${original_name%.*}" ]];
-then
-    echo -e "\033[33mRenaming \033[36m$original_name \033[33mto \033[0m$new_name"
-    mv "./$original_name" "./$new_name"
+    elif [[ "${original_name##*.}" == "${new_name##*.}" ||
+        "$new_name" == "${new_name%.*}" ||
+        "$original_name" == "${original_name%.*}" ]];
+    then
+        echo -e "\033[33mRenaming \033[36m$original_name \033[33mto \033[0m$new_name"
+        mv "./$original_name" "./$new_name"
 
     # check if ffmpeg is installed
-elif ! command -v ffmpeg &> /dev/null; then
-    echo -e "\033[31mError:\033[0m Install ffmpeg to perform filetype conversions."
-    echo -e "\033[33mRenaming \033[36m$original_name \033[33mto \033[0m${new_name%.*}.${original_name##*.}"
-    mv "./$original_name" "./${new_name%.*}.${original_name##*.}"
+    elif ! command -v ffmpeg &> /dev/null; then
+        echo -e "\033[31mError:\033[0m Install ffmpeg to perform filetype conversions."
+        echo -e "\033[33mRenaming \033[36m$original_name \033[33mto \033[0m${new_name%.*}.${original_name##*.}"
+        mv "./$original_name" "./${new_name%.*}.${original_name##*.}"
 
     # convert file
-else
-    echo -e "\033[33mConverting \033[36m$original_name \033[33mto \033[0m$new_name"
-    ffmpeg -i "$original_name" "$new_name" -loglevel warning
+    else
+        echo -e "\033[33mConverting \033[36m$original_name \033[33mto \033[0m$new_name"
+        ffmpeg -i "$original_name" "$new_name" -loglevel warning
 
         # check if ffmpeg was successful
         if [ $? -eq 0 ]; then
