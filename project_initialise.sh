@@ -77,6 +77,10 @@ elif [ "$LANGUAGE" = "rs" ]; then
     cargo init --vcs none
     echo -e "Cargo.lock\ntarget/\n" >> .gitignore
 
+elif [ "$LANGUAGE" == "iot" ]; then
+    $EDITOR -c "Pioinit"
+    echo -e ".pio/\n" >> .gitignore
+
 # Zig
 elif [ "$LANGUAGE" = "zig" ]; then
     zig init
