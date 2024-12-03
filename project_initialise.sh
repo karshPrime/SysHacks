@@ -12,9 +12,7 @@ TITLE="${1%.*}"
 GIT_USER="karshPrime"
 
 # Directories
-TEMPLATE="$HOME/Projects/SysHacks/Makefiles/"  # default makefile directory
-LICENSE="$HOME/Projects/LICENSE"    # license file; can be upgraded for dynamic 
-                                    # licenses per project
+LAYOUT="$HOME/Projects/.layout/"
 TMUXIFIER_LAYOUT="$HOME/.config/tmux/tmuxifier/layouts"
 
 
@@ -27,9 +25,9 @@ cd "$TITLE"
 
 # Initialize git & Commit license
 git init --quiet
-cp $LICENSE .
+cp $LAYOUT/LICENSE .
 git add LICENSE
-git commit -m "Apache 2.0"
+git commit -m "init: Apache 2.0"
 
 # Create .gitignore
 echo -e "\n# .gitignore\n\n**/.DS_Store\n" > .gitignore
@@ -37,7 +35,7 @@ echo -e "\n# .gitignore\n\n**/.DS_Store\n" > .gitignore
 # Write & Commit basic readme
 echo -e "# $TITLE\n\n" > README.md
 git add README.md 
-git commit -m "readme"
+git commit -m "init: readme"
 
 # Language specific actions ---------------------------------------------------
 
@@ -52,18 +50,25 @@ if [ "$LANGUAGE" = "go" ]; then
 
 # C/C++
 elif [ "$LANGUAGE" = "c" ] || [ "$LANGUAGE" = "cpp" ]; then
-    cp $TEMPLATE/$LANGUAGE ./Makefile
-    git add Makefile 
-    git commit -m "Makefile"
-    mkdir src obj lib
+    mkdir src obj lib include build
+
+    sed "s/PNAME/$TITLE/g" "$LAYOUT/cmake $LANGUAGE" > ./CMakeLists.txt
+    sed "s/PNAME/$TITLE/g" "$LAYOUT/cmake $LANGUAGE src" > ./src/CMakeLists.txt
+    git add CMakeLists.txt src/CMakeLists.txt
+    git commit -m "init: cmake"
+
     echo -e "\nint main() {\n    return 0;\n}\n" > "src/main.$LANGUAGE"
-    echo -e "bin\nobj/\n" >> .gitignore
+    echo -e ".cache/\ntodo\nbuild/\nobj/\n" >> .gitignore
+
+    cd ./build && cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON .. && cd ..
+
 
 # Lua
 elif [ "$LANGUAGE" = "lua" ]; then
     mkdir -p "lua/$TITLE"
     touch "lua/$TITLE/init.lua"
     echo -e "[format]\nindent=4\nline_width=80\nquote_style="Auto"">stylua.toml
+
 
 # Python
 elif [ "$LANGUAGE" = "py" ]; then
@@ -72,14 +77,19 @@ elif [ "$LANGUAGE" = "py" ]; then
     echo -e "\n# $TITLE\n\ndef main():\n    pass\n\nif __name__ == \"__main__\":
     main()\n" > main.py
 
+
 # Rust
 elif [ "$LANGUAGE" = "rs" ]; then
     cargo init --vcs none
     echo -e "Cargo.lock\ntarget/\n" >> .gitignore
 
+
+# PlatformIO
 elif [ "$LANGUAGE" == "iot" ]; then
     $EDITOR -c "Pioinit"
-    echo -e ".pio/\n" >> .gitignore
+    echo -e ".pio/\n.vscode/\n" >> .gitignore
+    rm ./*/README
+
 
 # Zig
 elif [ "$LANGUAGE" = "zig" ]; then
@@ -101,6 +111,7 @@ elif [ "$LANGUAGE" = "zig" ]; then
     cd ..
     echo -e ".zig-cache/\n\nzig-out/\nbin\n\n" >> .gitignore
 
+
 # Java
 elif [ "$LANGUAGE" = "java" ]; then
 	yes no | gradle init \
@@ -112,7 +123,6 @@ elif [ "$LANGUAGE" = "java" ]; then
 		--no-split-project \
 		--java-version 21 \
 		--overwrite
-
 
 	# use $TITLE as main class instead of App.Java
 
@@ -135,9 +145,10 @@ elif [ "$LANGUAGE" = "java" ]; then
 \n*/app/.classpath\n*/app/.project\n*/.project\n" >> .gitignore
 fi
 
+
 # Commit Template
 git add -A
-git commit -m "project init"
+git commit -m "init: project"
 
 # FLags Actions ---------------------------------------------------------------
 
@@ -173,7 +184,7 @@ if contains_flag "t" "$@"; then
 
     $EDITOR "$TITLE.session.sh"
     git add "$TITLE.session.sh"
-    git commit -m "tmuxifier layout"
+    git commit -m "init: tmuxifier layout"
     ln -s "$(pwd)/$TITLE.session.sh" $TMUXIFIER_LAYOUT
 fi
 
