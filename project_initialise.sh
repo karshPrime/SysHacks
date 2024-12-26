@@ -24,7 +24,7 @@ echo -e "# $PROJECT_TITLE\n\n" > README.md
 # Initialise Git
 git init --quiet
 git remote add origin "git@github.com:$GIT_USER/$PROJECT_TITLE.git"
-echo -e "\n# .gitignore\n\n**/.DS_Store" > .gitignore
+echo -e "\n# .gitignore\n\n**/.DS_Store\n**/todo" > .gitignore
 
 if [ -f "${SCRIPTS}/${LANGUAGE}.sh" ]; then
     "${SCRIPTS}/${LANGUAGE}.sh"

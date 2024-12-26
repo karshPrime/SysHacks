@@ -13,7 +13,7 @@ echo "
 
 // #include <stdio.h>
 
-int main()
+int main( int argc, char* argv[] )
 {
     return 0;
 }
@@ -41,7 +41,14 @@ target_include_directories(\${PROJECT_NAME} PUBLIC \${PROJECT_SOURCE_DIR}/includ
 " > ./src/CMakeLists.txt
 
 
-cd ./build && cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON .. && cd ..
+#- build directory--------------------------------------------------------------
+
+cd ./build; cmake ..; make
+cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
+rm ./CMakeCache.txt
+cd ..
+
+ln -s "./build/src/$PROJECT_TITLE" "./bin"
 
 
 #-Git Ignore--------------------------------------------------------------------
@@ -50,6 +57,8 @@ echo "
 .cache/
 build/
 todo/
-nobj/
+obj/
+
+bin
 " >> .gitignore
 
