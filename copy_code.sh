@@ -1,52 +1,54 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-# Get the base project directory
-base_dir=$(pwd)
+# Initialise arrays
+DIRS=()        # For arguments that start with a dot
+EXTENSIONS=()  # For arguments that do not start with a dot
 
-# Recursively search for code files with specified extensions and append them to buffer
-function process_directory {
-    local dir="$1"
-    shift
-    local extensions=("$@")
+# Temporary file buffer
+CATBUFFER=".__copy_buffer__"
+touch $CATBUFFER
 
-    for filename in "$dir"/*; do
-        if [ -d "$filename" ]; then
-            process_directory "$filename" "${extensions[@]}"
+# Loop through all arguments
+for arg in "$@"; do
+    if [[ $arg == .* ]]; then
+        DIRS+=( "$arg" )
+    else
+        EXTENSIONS+=( "-iname" "*.$arg" "-o" )
+    fi
+done
 
-        else
-            for ext in "${extensions[@]}"; do
-                if [ "${filename##*.}" = "$ext" ]; then
-                    # get relative path from base project directory
-                    relative_path=${filename#$base_dir/}
-                    echo "====== $relative_path ======" >> catbuffer.txt
-
-                    cat "$filename" >> catbuffer.txt
-                    echo >> catbuffer.txt
-
-                    break
-                fi
-            done
-        fi
-    done
-}
-
-# Check for correct number of arguments
-if [ "$#" -lt 1 ]; then
-    echo "Usage: $0 <file_extension1> [<file_extension2> ...]"
-    exit 1
+if [ ${#DIRS[@]} -eq 0 ]; then
+    DIRS+=( "." )
 fi
 
-# Create an empty buffer file
-> catbuffer.txt
+# Loop through all directories
+for dir in "${DIRS[@]}"; do
+	# remove trailing '-o' if present
+	if [ ${#EXTENSIONS[@]} -gt 0 ]; then
+		if [ ${EXTENSIONS[${#EXTENSIONS[@]}-1]} = "-o" ]; then
+			EXTENSIONS=("${EXTENSIONS[@]:0:${#EXTENSIONS[@]}-1}")
+		fi
+        
+		# find files based on constructed conditions, excluding .git directory
+        find "$dir" -type f          \
+            \( "${EXTENSIONS[@]}" \) \
+            -not -path './build/*'   \
+            -not -path '*/.*'        \
+            -exec sh -c              \
+                'for file; do echo "-[ $file ]--------------------------------------------------" \
+                >> "$0"; cat "$file" >> "$0"; done' "$CATBUFFER" {} +
 
-# Start processing from the current directory
-process_directory "$(pwd)" "$@"
+	else
+        find "$dir" -type f          \
+            -not -path './build/*'   \
+            -not -path '*/.*'        \
+            -exec sh -c              \
+                'for file; do echo "-[ $file ]--------------------------------------------------" \
+                >> "$0"; cat "$file" >> "$0"; done' "$CATBUFFER" {} +
+	fi
+done
 
-# Put content of the buffer file to clipboard
-pbcopy < catbuffer.txt
-
-# Delete the buffer file
-rm catbuffer.txt
-
-echo -e "All \033[33m$@ \033[0mfiles content have been concatenated to clipboard"
+# Remove temporary file buffer
+cat $CATBUFFER | pbcopy
+rm $CATBUFFER
 
