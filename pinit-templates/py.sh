@@ -2,8 +2,10 @@
 
 #-Project Structure-------------------------------------------------------------
 
-python3 -m venv ./.venv
+python3 -m venv ./.__pyenv__
+source ./.__pyenv__/bin/activate
 
+touch requirements.txt
 
 #-Main--------------------------------------------------------------------------
 
@@ -21,7 +23,7 @@ if __name__ == \"__main__\":
 #-Git Ignore--------------------------------------------------------------------
 
 echo "
-.venv/
+.__pyenv__/
 __pycache__/
 " >> .gitignore
 
