@@ -35,7 +35,7 @@ for dir in "${DIRS[@]}"; do
             -not -path './build/*'   \
             -not -path '*/.*'        \
             -exec sh -c              \
-                'for file; do echo "-[ $file ]--------------------------------------------------" \
+                'for file; do echo "======================[ $file ]======================" \
                 >> "$0"; cat "$file" >> "$0"; done' "$CATBUFFER" {} +
 
 	else
@@ -43,7 +43,7 @@ for dir in "${DIRS[@]}"; do
             -not -path './build/*'   \
             -not -path '*/.*'        \
             -exec sh -c              \
-                'for file; do echo "-[ $file ]--------------------------------------------------" \
+                'for file; do echo "======================[ $file ]======================" \
                 >> "$0"; cat "$file" >> "$0"; done' "$CATBUFFER" {} +
 	fi
 done
