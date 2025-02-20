@@ -13,7 +13,7 @@ echo "
 
 #include \"Defines.h\"
 
-int main( int argc, str argv[] )
+int main( int argc, char *argv[] )
 {
     return 0;
 }
@@ -48,7 +48,6 @@ echo "
 
 using std::string;
 using std::ostream;
-using str = char*;
 using uint = unsigned int;
 " > "include/Defines.h"
 
