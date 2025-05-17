@@ -7,6 +7,9 @@ CONVERT_FILE=false
 if [[ "$1" == "-c" || "$1" == "--convert" ]]; then
     CONVERT_FILE=true
     shift
+elif [[ "${!#}" == "-c" || "${!#}" == "--convert" ]]; then
+    CONVERT_FILE=true
+    set -- "${@:1:$(($#-1))}"
 fi
 
 #- Record original file names ----------------------------------------------------------------------
