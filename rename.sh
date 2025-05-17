@@ -1,5 +1,16 @@
 #!/bin/bash
 
+#- Process script flags ----------------------------------------------------------------------------
+
+CONVERT_FILE=false
+
+if [[ "$1" == "-c" || "$1" == "--convert" ]]; then
+    CONVERT_FILE=true
+    shift
+fi
+
+#- Record original file names ----------------------------------------------------------------------
+
 RENAME_BUFFER="/tmp/RENAME_BUFFER.toml"
 echo "# Mass Rename Tool
 # - Dont add new lines or delete existing ones
@@ -29,6 +40,9 @@ fi
 
 LINES_BEFORE=$(wc -l < "$RENAME_BUFFER" | tr -d ' ')
 
+
+#- Compare original against new names---------------------------------------------------------------
+
 $EDITOR "$RENAME_BUFFER"
 
 LINES_AFTER=$(wc -l < "$RENAME_BUFFER" | tr -d ' ')
@@ -52,11 +66,11 @@ for (( i=6; i<=$LINES_BEFORE; i++ )); do
         echo -e "\033[31mDeleting \033[36m$original_name"
         rm -rf "./$original_name"
 
-    # if the file extensions are the same
+    # if the file extensions are the same or convert is false
     elif [[ "${original_name##*.}" == "${new_name##*.}" ||
         "$new_name" == "${new_name%.*}" ||
-        "$original_name" == "${original_name%.*}" ]];
-    then
+        "$original_name" == "${original_name%.*}" ||
+        "$CONVERT_FILE" == false ]]; then
         echo -e "\033[33mRenaming \033[36m$original_name \033[33mto \033[0m$new_name"
         mv "./$original_name" "./$new_name"
 
@@ -79,6 +93,9 @@ for (( i=6; i<=$LINES_BEFORE; i++ )); do
         fi
     fi
 done
+
+
+#- Clean temporary file ----------------------------------------------------------------------------
 
 rm "$RENAME_BUFFER"
 
