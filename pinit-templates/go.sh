@@ -16,8 +16,8 @@ echo "
 package main
 
 import (
-    // "fmt"
-    // "github.com/$GIT_USER/$PROJECT_TITLE/cmd"
+    // \"fmt\"
+    // \"github.com/$GIT_USER/$PROJECT_TITLE/cmd\"
 )
 
 func main() {
