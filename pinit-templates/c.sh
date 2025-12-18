@@ -11,6 +11,7 @@ mkdir src obj lib include build
 echo "
 // main.c
 
+// #define NODEBUG
 // #include \"Debug.h\"
 
 int main( int argc, char *argv[] )
@@ -24,7 +25,7 @@ echo '
 
 #pragma once
 
-// #define PRODUCTION
+// #define NODEBUG
 
 #include <stdio.h>
 #include <errno.h>
@@ -46,7 +47,7 @@ echo '
     #define TERM_RESET   ""
 #endif
 
-#ifdef PRODUCTION
+#ifdef NODEBUG
     #define debug( M, ... )
 
     #define log_error( M, ... ) fprintf( stderr, "%s[ERROR]%s " M "\n%s",\

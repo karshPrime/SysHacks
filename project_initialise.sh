@@ -13,7 +13,7 @@ SCRIPTS="$HOME/Projects/SysHacks/pinit-templates"
 LANGUAGE="${1##*.}"
 export PROJECT_TITLE="${1%.*}"
 
-echo "Initializing Project at $(pwd)/$PROJECT_TITLE"
+echo "Initialising Project at $(pwd)/$PROJECT_TITLE"
 
 # Initialise Project
 mkdir "$PROJECT_TITLE"
